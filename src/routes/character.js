@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const router = Router();
+const { getCharacters } = require('../controllers/character/getCharacters');
 const {
-  getCharacters,
   getCharacterById,
-  createCharacter,
-  updateCharacter,
-  deleteCharacter,
-} = require('../controllers/character');
+} = require('../controllers/character/getCharacterById');
+const { createCharacter } = require('../controllers/character/createCharacter');
+const { updateCharacter } = require('../controllers/character/updateCharacter');
+const { deleteCharacter } = require('../controllers/character/deleteCharacter');
 
 router.get('/', getCharacters);
 router.get('/:id', getCharacterById);

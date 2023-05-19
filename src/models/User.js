@@ -24,3 +24,28 @@ module.exports = (sequelize) => {
     }
   );
 };
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *   User:
+ *     type: object
+ *     properties:
+ *        name:
+ *          type: string  # Cadena de texto
+ *          description: Nombre del usuario
+ *          example: John Doe  # Ejemplo de nombre del usuario
+ *          allowNull: false  # No se permite valor nulo
+ *        email:
+ *          type: string  # Cadena de texto
+ *          description: Dirección de correo electrónico del usuario
+ *          example: johndoe@example.com  # Ejemplo de correo electrónico del usuario
+ *          unique: true  # Valor único requerido
+ *          allowNull: false  # No se permite valor nulo
+ *        password:
+ *          type: string  # Cadena de texto
+ *          description: Contraseña del usuario
+ *          example: password123  # Ejemplo de contraseña del usuario
+ *          allowNull: false  # No se permite valor nulo
+ */
