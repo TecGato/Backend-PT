@@ -44,6 +44,7 @@ async function login(req, res) {
     }
     const payload = { email: user.email, password: user.password };
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    console.log(token);
     res.cookie('token', token, {
       maxAge: 1000 * 60 * 60 * 1,
       sameSite: 'none',
