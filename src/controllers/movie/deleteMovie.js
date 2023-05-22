@@ -1,34 +1,30 @@
-const { Character } = require('../../db');
+const { Movie } = require('../../db');
 
-async function updateCharacter(req, res) {
+async function deleteMovie(req, res) {
   const { id } = req.params;
-  const { movie, ...updates } = req.body;
   try {
-    const character = await Character.findByPk(id);
-    if (!character) {
-      return res.status(400).json({ error: 'Character not found' });
+    const movie = await Movie.findByPk(id);
+    if (!movie) {
+      return res.status(400).json({ error: 'Movie not found' });
     }
-    await character.update({
-      ...updates,
-    });
-    await character.setMovies(movie);
-    return res.status(200).json({ msg: 'Character Updated', character });
+    await movie.destroy();
+    return res.status(200).json({ msg: 'Movie Deleted' });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 }
 
 module.exports = {
-  updateCharacter,
+  deleteMovie,
 };
 
 /**
  * @swagger
- * /characters/{id}:
- *   put:
- *     summary: Update a character
+ * /movies/{id}:
+ *   delete:
+ *     summary: Delete a movie
  *     tags:
- *       - Characters
+ *       - Movies
  *     parameters:
  *       - in: header
  *         name: cookie
@@ -39,18 +35,13 @@ module.exports = {
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the character to update
  *         schema:
  *           type: string
- *       - in: body
- *         name: character
- *         required: true
- *         description: Updated character object
- *         schema:
- *           $ref: '#/components/schemas/Character'
+ *           format: uuid
+ *         description: The ID of the movie to delete
  *     responses:
  *       200:
- *         description: Character updated successfully
+ *         description: Movie deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -58,10 +49,8 @@ module.exports = {
  *               properties:
  *                 msg:
  *                   type: string
- *                 character:
- *                   $ref: '#/components/schemas/Character'
  *       400:
- *         description: Character not found or missing fields
+ *         description: Bad request - Movie not found
  *         content:
  *           application/json:
  *             schema:

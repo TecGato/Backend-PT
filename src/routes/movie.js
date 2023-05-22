@@ -1,12 +1,10 @@
 const { Router } = require('express');
 const router = Router();
-const {
-  getMovies,
-  getMovieById,
-  createMovie,
-  updateMovie,
-  deleteMovie,
-} = require('../controllers/movie');
+const { getMovies } = require('../controllers/movie/getMovies');
+const { getMovieById } = require('../controllers/movie/getMovieById');
+const { createMovie } = require('../controllers/movie/createMovie');
+const { updateMovie } = require('../controllers/movie/updateMovie');
+const { deleteMovie } = require('../controllers/movie/deleteMovie');
 
 router.get('/', getMovies);
 router.get('/:id', getMovieById);

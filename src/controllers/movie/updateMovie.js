@@ -1,34 +1,35 @@
-const { Character } = require('../../db');
+const { Movie } = require('../../db');
 
-async function updateCharacter(req, res) {
+async function updateMovie(req, res) {
   const { id } = req.params;
-  const { movie, ...updates } = req.body;
+  const { character, genre, ...updates } = req.body;
   try {
-    const character = await Character.findByPk(id);
-    if (!character) {
-      return res.status(400).json({ error: 'Character not found' });
+    const movie = await Movie.findByPk(id);
+    if (!movie) {
+      return res.status(400).json({ error: 'Movie not found' });
     }
-    await character.update({
+    await movie.update({
       ...updates,
     });
-    await character.setMovies(movie);
-    return res.status(200).json({ msg: 'Character Updated', character });
+    await movie.setCharacters(character);
+    await movie.setGenres(genre);
+    return res.status(200).json({ msg: 'Movie Updated', movie });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 }
 
 module.exports = {
-  updateCharacter,
+  updateMovie,
 };
 
 /**
  * @swagger
- * /characters/{id}:
+ * /movies/{id}:
  *   put:
- *     summary: Update a character
+ *     summary: Update a movie
  *     tags:
- *       - Characters
+ *       - Movies
  *     parameters:
  *       - in: header
  *         name: cookie
@@ -38,19 +39,20 @@ module.exports = {
  *         description: auth token cookie (JWT).
  *       - in: path
  *         name: id
- *         required: true
- *         description: ID of the character to update
  *         schema:
  *           type: string
- *       - in: body
- *         name: character
+ *           format: uuid
  *         required: true
- *         description: Updated character object
+ *         description: ID of the movie to update
+ *       - in: body
+ *         name: body
  *         schema:
- *           $ref: '#/components/schemas/Character'
+ *           $ref: '#/components/schemas/Movie'
+ *         required: true
+ *         description: Updated movie data
  *     responses:
  *       200:
- *         description: Character updated successfully
+ *         description: Movie updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -58,10 +60,10 @@ module.exports = {
  *               properties:
  *                 msg:
  *                   type: string
- *                 character:
- *                   $ref: '#/components/schemas/Character'
+ *                 movie:
+ *                   $ref: '#/components/schemas/Movie'
  *       400:
- *         description: Character not found or missing fields
+ *         description: Movie not found
  *         content:
  *           application/json:
  *             schema:
